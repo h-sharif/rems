@@ -32,7 +32,9 @@
 download_historic_data <- function(force = FALSE,
                                    ask = TRUE,
                                    dont_update = FALSE,
-                                   httr_config = list()) {
+                                   httr_config = list(),
+                                   session = NULL,
+                                   id = NULL) {
   file_meta <- get_file_metadata("historic", "zip")
   cache_date <- get_cache_date("historic")
   db_path <- write_db_path()
@@ -80,7 +82,7 @@ download_historic_data <- function(force = FALSE,
   message("This is going to take a while...")
   message("Downloading latest 'historic' EMS data")
   url <- paste0(base_url(), file_meta[["filename"]])
-  csv_file <- download_ems_data(url)
+  csv_file <- download_ems_data(url, session = session, id = id)
   on.exit(unlink(csv_file), add = TRUE)
 
   if (db_exists) {

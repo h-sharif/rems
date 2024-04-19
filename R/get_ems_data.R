@@ -161,11 +161,16 @@ update_cache <- function(which, n, cols) {
   # nocov end
 }
 
-download_ems_data <- function(url) {
+download_ems_data <- function(url, session = NULL, id = NULL) {
   # nocov start
   ext <- tools::file_ext(url)
   tfile <- tempfile(fileext = paste0(".", ext))
-  res <- httr::GET(url, httr::write_disk(tfile), httr_progress())
+  if (!is.null(session) & !is.null(id)) {
+    res <- httr::GET(url, httr::write_disk(tfile),
+                     shinyhttr::progress(sesion, id, type = "down"))
+  } else {
+    res <- httr::GET(url, httr::write_disk(tfile), httr_progress())
+  }
   cat_if_interactive("\n")
   httr::stop_for_status(res)
   handle_zip(res$request$output$path)
