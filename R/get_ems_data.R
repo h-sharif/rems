@@ -167,7 +167,7 @@ download_ems_data <- function(url, session = NULL, id = NULL) {
   tfile <- tempfile(fileext = paste0(".", ext))
   if (!is.null(session) & !is.null(id)) {
     res <- httr::GET(url, httr::write_disk(tfile),
-                     shinyhttr::progress(sesion, id, type = "down"))
+                     shinyhttr::progress(session, id, type = "down"))
   } else {
     res <- httr::GET(url, httr::write_disk(tfile), httr_progress())
   }
